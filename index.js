@@ -8,6 +8,14 @@ app.use(express.json());
 
 const schema="sql6630559";
 
+app.use(function (req, res, next) {
+    //Enabling CORS
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+      next();
+});
+
+
 app.get("/femaleratio",(req,res)=>{
 
     var sql=`SELECT EXTRACT(YEAR FROM STR_TO_DATE(hire_date, '%Y/%m/%d')) AS hire_year, SUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) AS female,SUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END) AS male FROM ${schema}.employeedata GROUP BY hire_year ORDER BY hire_year DESC LIMIT 7;`
